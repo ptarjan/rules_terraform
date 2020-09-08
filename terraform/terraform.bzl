@@ -1,6 +1,5 @@
-
 toolchains = {
-    "macos_amd64": {
+    "darwin_amd64": {
         "os": "darwin",
         "arch": "amd64",
         "sha": "2c2d9d435712f4be989738b7899917ced7c12ab05b8ddc14359ed4ddb1bc9375",
@@ -199,20 +198,21 @@ terraform_plan = rule(
 def _terraform_version(ctx):
     output = ctx.actions.declare_file("version.out")
     ctx.actions.run(
-            executable = ctx.executable._exec,
-            arguments = [
-                    "version",
-                    ],
-            outputs = [output],
-            )
+        executable = ctx.executable._exec,
+        arguments = [
+            "version",
+        ],
+        outputs = [output],
+    )
 
 terraform_version = rule(
         implementation = _terraform_version,
         attrs = {
-                 "_exec": attr.label(
-            default = Label("@register_terraform_toolchains//:terraform_executable"),
-            allow_files = True,
-            executable = True,
-            cfg = "host"),
+            "_exec": attr.label(
+                default = Label("@register_terraform_toolchains//:terraform_executable"),
+                allow_files = True,
+                executable = True,
+                cfg = "host",
+            ),
         },
  )
