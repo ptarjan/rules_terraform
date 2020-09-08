@@ -1,4 +1,4 @@
-load("//terraform:terraform.bzl", "declare_terraform_toolchains")
+load("@rules_terraform//terraform:terraform.bzl", "declare_terraform_toolchains")
 
 package(default_visibility = ["//visibility:public"])
 
