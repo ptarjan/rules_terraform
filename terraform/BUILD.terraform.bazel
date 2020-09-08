@@ -4,6 +4,7 @@ package(default_visibility = ["//visibility:public"])
 
 declare_terraform_toolchains(
     version = "{version}",
+    sha256 = "{sha256}"
 )
 
 filegroup(

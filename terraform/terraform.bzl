@@ -116,7 +116,7 @@ def _detect_platform_arch(ctx):
 
     return platform, arch
 
-def _terraform_build_file(ctx, platform, version):
+def _terraform_build_file(ctx, platform, version, sha256):
     ctx.file("ROOT")
     ctx.template(
         "BUILD.bazel",
@@ -125,7 +125,8 @@ def _terraform_build_file(ctx, platform, version):
         substitutions = {
             "{name}": "terraform_executable",
             "{exe}": ".exe" if platform == "windows" else "",
-            "{version}": version
+            "{version}": version,
+            "{sha256}": sha256,
         },
     )
 
@@ -140,7 +141,7 @@ def _remote_terraform(ctx, url, sha256):
 def _terraform_register_toolchains_impl(ctx):
     platform, arch = _detect_platform_arch(ctx)
     version = ctx.attr.version
-    _terraform_build_file(ctx, platform, version)
+    _terraform_build_file(ctx, platform, version, ctx.attr.sha256)
 
     host = "{}_{}".format(platform, arch)
     info = toolchains[host]
