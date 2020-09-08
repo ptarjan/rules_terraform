@@ -21,4 +21,7 @@ http_archive(
 
 load("@rules_terraform//terraform:terraform.bzl", "terraform_register_toolchains")
 
-terraform_register_toolchains("0.13.2")
+terraform_register_toolchains(
+    version = "0.13.2",
+    sha256 = "7af2f9c03e8687c87e7798178a2dac9a3061955eb19f0f69501475e017b8d8f6",
+)
