@@ -92,7 +92,7 @@ def declare_terraform_toolchains(version, sha256):
             exec_compatible_with = info["exec_compatible_with"],
             target_compatible_with = info["target_compatible_with"],
             toolchain = name,
-            toolchain_type = "@rules_terraform//:toolchain_type",
+            toolchain_type = "//:toolchain_type",
         )
 
 def _detect_platform_arch(ctx):
@@ -120,7 +120,7 @@ def _terraform_build_file(ctx, platform, version):
     ctx.file("ROOT")
     ctx.template(
         "BUILD.bazel",
-        Label("@rules_terraform//terraform:BUILD.terraform.bazel"),
+        Label("//terraform:BUILD.terraform.bazel"),
         executable = False,
         substitutions = {
             "{name}": "terraform_executable",

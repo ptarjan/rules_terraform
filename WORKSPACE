@@ -19,7 +19,7 @@ http_archive(
     url = "https://github.com/bazelbuild/buildtools/archive/master.zip",
 )
 
-load("@rules_terraform//terraform:terraform.bzl", "terraform_register_toolchains")
+load("//terraform:terraform.bzl", "terraform_register_toolchains")
 
 terraform_register_toolchains(
     version = "0.13.2",
