@@ -141,26 +141,33 @@ def _remote_terraform(ctx, url, sha256):
 def _terraform_register_toolchains_impl(ctx):
     platform, arch = _detect_platform_arch(ctx)
     version = ctx.attr.version
-    _terraform_build_file(ctx, platform, version, ctx.attr.sha256)
-
+    if ctx.attr.sha256 and ctx.attr.sha256s:
+      fail("Specify only one of sha256 or sha256s")
+    if not ctx.attr.sha256 and not ctx.attr.sha256s:
+      fail("Specify either sha256 or sha256s")
     host = "{}_{}".format(platform, arch)
+    sha = ctx.attr.sha256 or ctx.attr.sha256s[host]
+    _terraform_build_file(ctx, platform, version, sha)
+
     info = toolchains[host]
     url = _format_url(version, info["os"], info["arch"])
-    _remote_terraform(ctx, url, ctx.attr.sha256)
+    _remote_terraform(ctx, url, sha)
 
 _terraform_register_toolchains = repository_rule(
     _terraform_register_toolchains_impl,
     attrs = {
         "version": attr.string(),
         "sha256": attr.string(),
+        "sha256s": attr.string_dict()
     },
 )
 
-def terraform_register_toolchains(version, sha256):
+def terraform_register_toolchains(version, sha256 = "", sha256s = {}):
     _terraform_register_toolchains(
         name = "register_terraform_toolchains",
         version = version,
         sha256 = sha256,
+        sha256s = sha256s
     )
 
 def _terraform_plan(ctx):
